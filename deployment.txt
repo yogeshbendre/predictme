@@ -21,8 +21,9 @@ spec:
         args:
          - git clone https://github.com/yogeshbendre/predictme;
            cd predictme;
-           pip3 install torch;
-           pip3 install flask;
+           pip install torch;
+           pip install flask;
+		   pip install scipy;
            python3 runflask.py;
         ports:
         - containerPort: 8080
