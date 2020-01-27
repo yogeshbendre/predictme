@@ -1,0 +1,29 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: ysbregpredictor 
+  labels: 
+    app: ysbregpredictor
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: ysbregpredictor
+  template:
+    metadata:
+      labels:
+        app: ysbregpredictor
+    spec:
+      containers:
+      - name: ysbregpredictor
+        image: kaggle/python
+        command: ["/bin/sh", "-c"]
+        args:
+         - git clone https://github.com/yogeshbendre/predictme;
+           cd predictme;
+           pip install flask;
+           pip install scipy;
+           python reg_flask.py;
+        ports:
+        - containerPort: 7775
+ 

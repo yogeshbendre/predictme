@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ysbregservice
+  labels:
+    app: ysbregserver
+spec:
+  ports:
+    - port: 7775
+  selector:
+    app: ysbserver
+  type: NodePort
+ 
