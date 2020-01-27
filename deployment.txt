@@ -1,21 +1,21 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
-  name: predict-imdb 
+  name: ysbpredictor 
   labels: 
-    app: myke
+    app: ysbpredictor
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: myke
+      app: ysbpredictor
   template:
     metadata:
       labels:
-        app: myke
+        app: ysbpredictor
     spec:
       containers:
-      - name: myke
+      - name: ysbpredictor
         image: pytorch/pytorch
         command: ["/bin/sh", "-c"]
         args:
