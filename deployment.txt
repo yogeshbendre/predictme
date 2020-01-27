@@ -22,7 +22,7 @@ spec:
          - git clone https://github.com/yogeshbendre/predictme;
            cd predictme;
            pip3 install torch;
-		   pip3 install flask;
+           pip3 install flask;
            python3 runflask.py;
         ports:
         - containerPort: 8080
