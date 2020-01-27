@@ -1,0 +1,28 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: predict-imdb 
+  labels: 
+    app: testmyke
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: testmyke
+  template:
+    metadata:
+      labels:
+        app: testmyke
+    spec:
+      containers:
+      - name: testmyke
+        image: pytorch/pytorch
+        command: ["/bin/sh", "-c"]
+        args:
+         - git clone https://github.com/yogeshbendre/predictme;
+           cd predictme;
+           pip install flask;
+           python testflask.py;
+        ports:
+        - containerPort: 8080
+ 
