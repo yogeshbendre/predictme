@@ -6,7 +6,7 @@ metadata:
     app: testimdb-server
 spec:
   ports:
-    - port: 7777
+    - port: 7778
   selector:
     app: testmyke
   type: NodePort
