@@ -66,11 +66,31 @@ class Net(nn.Module):
 
 net = Net()
 use_cuda = torch.cuda.is_available()
+mydevice="cpu"
 if use_cuda:
   net = net.cuda()
   print("GPU Device found, congrats, you will have fast training...!!!")
+  mydevice = "gpu"
 else:
   print("No GPU found, training may be slow, hang on...!!!")
+  mydevice = "cpu"
+
+def print_info(stmt):
+  print(mydevice+": "+stmt)
+
+def print_gpu_stats():
+  if use_cuda:
+    t = torch.cuda.get_device_properties(0).total_memory/1048576
+    r = torch.cuda.memory_reserved(0)/1048576
+    a = torch.cuda.memory_allocated(0)/1048576
+    f = r-a
+    print_info("Total GPU Memory: "+str(t)+" MB")
+    print_info("Reseverd GPU Memory: "+str(r)+" MB")
+    print_info("Allocated GPU Memory: "+str(a)+" MB")
+    print_info("Free GPU Memory: "+str(f)+" MB")
+  else:
+    print_info(" No GPU Device")
+
 
 import torch.optim as optim
 
@@ -80,7 +100,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 import time
 
 t0_total = time.time()
-total_epochs=5
+total_epochs=1
 for epoch in range(total_epochs):  # loop over the dataset multiple times
     t0 = time.time()
     running_loss = 0.0
@@ -101,24 +121,26 @@ for epoch in range(total_epochs):  # loop over the dataset multiple times
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
-
+        print_gpu_stats()
         # print statistics
         #print("Batch: "+str(i))
         running_loss += loss.item()
         if (i+1) % 100 == 0:    
-            print('[Epoch %d, Batch %5d] loss: %.3f' %
+            print_info('[Epoch %d, Batch %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
-    print('Epoch {} took {} seconds'.format((epoch+1), (time.time() - t0)))
+    print_info('Epoch {} took {} seconds'.format((epoch+1), (time.time() - t0)))
+    print_gpu_stats()	
 
-print('Finished Training')
+print_info('Finished Training')
 totalimages = len(trainloader.dataset)
-print('Training Stats')
-print('Number of images: '+str(totalimages))
-print('Number of images per batch: '+str(batch_size))
-print('Number of batches: '+str(totalimages/batch_size))
-print('Number of epochs: '+ str(total_epochs))
-print('Complete training took {} seconds'.format((time.time() - t0_total)))
+print_info('Training Stats')
+print_info('Number of images: '+str(totalimages))
+print_info('Number of images per batch: '+str(batch_size))
+print_info('Number of batches: '+str(totalimages/batch_size))
+print_info('Number of epochs: '+ str(total_epochs))
+print_info('Complete training took {} seconds'.format((time.time() - t0_total)))
+print("Training completed with device: "+mydevice)
 
 
 
